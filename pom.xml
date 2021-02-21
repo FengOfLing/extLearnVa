@@ -11,6 +11,7 @@
     <modules>
         <module>designPattern</module>
         <module>sql</module>
+        <module>LeetCode</module>
     </modules>
 
     <properties>
