@@ -10,8 +10,8 @@
     <version>1.0-RELEASE</version>
     <modules>
         <module>designPattern</module>
+        <module>leetCode</module>
         <module>sql</module>
-        <module>LeetCode</module>
     </modules>
 
     <properties>
