@@ -1,4 +1,4 @@
-package org.edu.cqu.learn.code.day1;
+package org.edu.cqu.learn.code.day1.feng;
 
 public class Solution {
 
