@@ -1,31 +1,60 @@
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class Solution {
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring("abcabcbb"));
+        int matrix[][]  = { {1,2}, {2,2}};
+        System.out.println(isToeplitzMatrix(new int[][]{{1,2},{2,2}}));
+    }
+
+    public static boolean isToeplitzMatrix(int[][] matrix) {
+        //å–ç¬¬ä¸€æŽ’æ•°æ®çš„æ—¶å€™ï¼Œå¯ä»¥ç”¨ä¸€ä¸ªä¸€ç»´æ•°ç»„è¡¨ç¤ºä¸‹ä¸€æŽ’çš„æ•°æ®è¦æ±‚ [X,1,3,4]
+        // Xå€¼å¯ä»¥å–-1,-1å€¼ä¸åœ¨æ•°ç»„ä¸­å­˜åœ¨ï¼Œè¡¨ç¤ºä¸‹ä¸€æŽ’å¯¹åº”ä½ç½®æ˜¯ä»»æ„æ•°å­—éƒ½èƒ½æ­£ç¡®åŒ¹é…
+        int x = -1;
+        int[] compare = new int[matrix[0].length];
+        Arrays.setAll(compare,index->x);
+        for (int i = 0; i < matrix.length; i++) {
+            int[] compareTo = matrix[i];
+
+            for (int j = compare.length -1; j >= 0; j--) {
+                //å¡«å…… compare
+                if( j + 1 < compare.length){
+                    compare[j+1] = compareTo[j];
+                }
+                //æ¯”è¾ƒ å€’å™ä¾¿äºŽé‡å¤ä½¿ç”¨compareæ•°ç»„
+                if(compare[j] == x){
+                    continue;
+                }
+                if( compare[j] != compareTo[j]){
+                    return false; //ç›´æŽ¥è¿”å›ž
+                }
+            }
+            compare[0] = x;//ç¬¬ä¸€ä½æ°¸è¿œæ˜¯éšæ„åŒ¹é…
+        }
+        return true;
     }
 
     public static int lengthOfLongestSubstring(String s) {
-        //ÓÉ×óÓÒÁ½±ßµÄÓÎ±êleft/right,Í¬Ê±´ÓÍ·¿ªÊ¼ ÏÈÓÎ¶¯rightÖ±µ½ÕÒµ½ÖØ¸´×Ö·û£¬µÃµ½Ò»¸ö³¤¶È£¬leftÒÆµ½±»ÖØ¸´µÄ×Ö·ûÎ»ÖÃ£¬ÔÙÑ­»·ÒÆ¶¯right£¬µÃµ½Ò»ÏµÁÐ³¤¶È£¬È¡µ½×î´óÖµ¼´¿É¡£
-        //Ê¹ÓÃsetÀ´ÅÐ¶Ïµ±Ç°left-rightÎ»ÖÃ£¬º¬ÓÐÄÄÐ©×Ö·û£¬¿ÉÒÔ¿ìËÙµÄÅÐ¶ÏÊÇ·ñÖØ¸´¡£
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½Î±ï¿½left/right,Í¬Ê±ï¿½ï¿½Í·ï¿½ï¿½Ê¼ ï¿½ï¿½ï¿½Î¶ï¿½rightÖ±ï¿½ï¿½ï¿½Òµï¿½ï¿½Ø¸ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ãµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½leftï¿½Æµï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½Ö·ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½Æ¶ï¿½rightï¿½ï¿½ï¿½Ãµï¿½Ò»Ïµï¿½Ð³ï¿½ï¿½È£ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½É¡ï¿½
+        //Ê¹ï¿½ï¿½setï¿½ï¿½ï¿½Ð¶Ïµï¿½Ç°left-rightÎ»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð©ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½Ùµï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½
         int left = 0, right = 0;
         int result = 0;
         HashSet<Character> charSet = new HashSet<>();
         while ( right < s.length() ){
             if( charSet.contains( s.charAt(right))){
-                //¼ÆËã±¾´ÎµÄ½á¹û
+                //ï¿½ï¿½ï¿½ã±¾ï¿½ÎµÄ½ï¿½ï¿½
                 result = Math.max(result , right-left);
-                //ÒÆ¶¯leftÓÎ±ê
+                //ï¿½Æ¶ï¿½leftï¿½Î±ï¿½
                 for ( ;s.charAt(right) != s.charAt(left); left++){
                     charSet.remove(s.charAt(left));
                 }
-                left++;//Ö¸µ½ÐÂµÄÆðµã
+                left++;//Ö¸ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½
             }else{
                 charSet.add(s.charAt(right));
             }
             right++;
         }
-        //½áÎ²¶¼Ã»ÓÐÖØ¸´£¬¼ÆËãÊÇ·ñÊÇ×î³¤
+        //ï¿½ï¿½Î²ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½î³¤
         result = Math.max(result , right-left);
         return result;
 
