@@ -7,6 +7,7 @@ public class Solution {
         System.out.println(isToeplitzMatrix(new int[][]{{1,2},{2,2}}));
     }
 
+
     public static boolean isToeplitzMatrix(int[][] matrix) {
         //取第一排数据的时候，可以用一个一维数组表示下一排的数据要求 [X,1,3,4]
         // X值可以取-1,-1值不在数组中存在，表示下一排对应位置是任意数字都能正确匹配
