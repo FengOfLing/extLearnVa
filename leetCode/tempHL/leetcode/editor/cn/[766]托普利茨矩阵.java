@@ -58,18 +58,16 @@ class Solution {
         int[] compare = new int[matrix[0].length];
         Arrays.setAll(compare,index->x);
         for (int i = 0; i < matrix.length; i++) {
-            int[] compareTo = matrix[i];
-
             for (int j = compare.length -1; j >= 0; j--) {
                 //填充 compare
                 if( j + 1 < compare.length){
-                    compare[j+1] = compareTo[j];
+                    compare[j+1] = matrix[i][j];
                 }
                 //比较 倒叙便于重复使用compare数组
                 if(compare[j] == x){
                     continue;
                 }
-                if( compare[j] != compareTo[j]){
+                if( compare[j] != matrix[i][j]){
                     return false; //直接返回
                 }
             }
