@@ -57,19 +57,45 @@ class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int totalLength = nums1.length + nums2.length;
         boolean needAvrage = totalLength%2 == 0;
-        boolean flag = false;//是否是从nums1找到目标中位数，否则是nums2
+        int[] middle = new int[]{0,0};
         int i = 0, j = 0;
+        found:
         for (; i < nums1.length ; i++) {
-            if( i + j == totalLength/2){
-                flag = nums1[i] < nums2[j];
-                break;
-            }
             //nums2的下一位小于nums1的下一位 j++
-            if( nums1[i] > nums2[j]) {
+            if( j < nums2.length && nums1[i] > nums2[j]) {
                 for (; j < nums2.length; j++) {
-
+                    if( nums1[i] <= nums2[j]){
+                        break;
+                    }else{
+                        middle[1] = middle[0];
+                        middle[0] = nums2[j];
+                        if( i + j == totalLength/2){
+                            break found;
+                        }
+                    }
+                }
+                i--;//i会在for里面+1，提前减1
+            }else{
+                middle[1] = middle[0];
+                middle[0] = nums1[i];
+                if( i + j == totalLength/2){
+                    break found;
                 }
             }
+        }
+
+        //nums1提前循环结束 还未找到中位,继续循环nums2
+        if( i == nums1.length){
+            i--;
+        }
+        for( ; i+j <totalLength/2; j++){
+            middle[1] = middle[0];
+            middle[0] = nums2[j];
+        }
+        if( needAvrage){
+            return ( (double) middle[0] + (double) middle[1]) / 2;
+        }else{
+            return (double) middle[0];
         }
     }
 }
