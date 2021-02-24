@@ -49,15 +49,14 @@ class Solution {
     public int minKBitFlips(int[] A, int K) {
         int count = 0;
         //遇到A[i] == 0 就翻转 A[i]-A[i+k],如果i+k>=数组长度，则翻转失败，翻转后 从A[i+1]重复处理
-        //如果每次翻转循环  A[i]-A[i+k]去修改，会出现超时
         for (int i = 0; i < A.length ; i++) {
-            if(A[i] == 0){
+            if(A[i] % 2 == 0){
                 if( i + K > A.length){
                     return -1;
                 }
                 count ++;
                 for (int j = 0; j < K ; j++) {
-                    A[i+j] = A[i+j] == 0 ? 1 : 0;
+                    A[i+j]++; // ++是赋值操作；A[i+j] = A[i+j]==0?1:0 读取+判断+赋值操作
                 }
             }
         }
