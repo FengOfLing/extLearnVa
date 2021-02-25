@@ -49,6 +49,8 @@ class Solution {
         //同一个位置删除小于K个字符后编码字符长度一定是 大于等于 删除K个字符后编码字符的长度，所有使用删除定K个字符计算即可
         //先计算不删减的字符串压缩后的长度，然后循环计算altCount[i]+...+altCount[i+n] <= k 最大的长度差值（PS两位数也一位数有差别）
         ArrayList<Integer> altCount = new ArrayList<>();
+        ArrayList<Character> altChar = new ArrayList<>();
+
 
         int index = 0;
         altCount.add(1);
@@ -57,9 +59,17 @@ class Solution {
                 altCount.set(index, altCount.get(index)+1 );
             }else{
                 altCount.add( 1) ;
+                altChar.add(s.charAt(i));
                 index++;
             }
         }
+        //计算原长度
+        int totalLength = altChar.size();
+        for (int i = 0; i < altCount.size(); i++) {
+            totalLength += getCountLen(altCount.get(i));
+        }
+
+        //计算最大的差值
         int maxDiff = 0;
         for (int i = 0; i < altCount.size(); i++) {
             int diff = 0,counts = 0, j = 0;
@@ -68,7 +78,12 @@ class Solution {
                 diff += (( altCount.get(j) == 1 ? 0:1 ) +  (altCount.get(j) > 10 ? 2 : 1 ));
             }
             //如果前后的字符相同 优先考虑前后合并带来的diff
-//            if()
+            if(i != 0 && altChar.get(i-1) == altChar.get(j)){
+                diff += ( getCountLen(altCount.get(i-1)) +
+                            getCountLen(altCount.get(j)) -
+                            getCountLen(altCount.get(i-1)+altCount.get(j)-k + counts));
+                diff++;//字符也少一位；
+            }
             //如果不能合并，而且还有剩余的可减少的字符，计算能不能额外减少前后字符的个数使得两位数变一位数
             if( k - counts > 0){
                 int diffCount = k - counts;
@@ -82,7 +97,11 @@ class Solution {
             }
             maxDiff = Math.max(maxDiff,diff);
         }
-        return maxDiff;
+        return totalLength - maxDiff;
+    }
+
+    public int getCountLen(int count){
+        return count == 1 ? 0 :( count < 10 ? 1 : 2);
     }
 
 }
