@@ -58,60 +58,64 @@ class Solution {
         //        1 1 true      0	0
         //那么 !puzzle&word 每一位都是0表示验证通过表示word满足每个字母都在puzzle中存在
         //与（&）、非（~）、或（|）、异或（^）
-        //1.全部使用位计算后还是超时了，字符这么多重复的，使用map存储string对应的位int，减少计算
+        //1.全部使用位计算后还是超时了，字符这么多重复的，使用map存储string对应的位int，减少计算 *取消
         //2.谜面可能重复 ，再用个map(map)存储谜面的结果,不同的前缀，有不同的结果
         //3.还是计算超时了 需要减少exsist的调用次数 ...晚点再想办法
-        HashMap<String,Integer> mapInt = new HashMap<>();
-        HashMap<Integer,HashMap<Character,Integer>> mapCount = new HashMap<>();
+        //4.谜面是长度固定的且不重复，是否可以根据谜面 就能列举出谜底所有的可能性
+        HashMap<Integer,Integer> wordCounts = new HashMap<>();
         List<Integer> result = new ArrayList<>();
-        int[] wordsNum = new int[words.length];
         for (int i = 0; i < words.length; i++) {
-            wordsNum[i] = countPuzzles(mapInt,words[i]);
+            int count = countPuzzles(words[i]);
+            wordCounts.put(count,  wordCounts.get(count) == null ? 1 :( wordCounts.get(count) + 1));
         }
         for (int i = 0; i < puzzles.length; i++) {
-            int puzzle = countPuzzles(mapInt,puzzles[i]);
-            if( mapCount.get(puzzle) != null && mapCount.get(puzzle).get(puzzles[i].charAt(0)) != null){
-                result.add(mapCount.get(puzzle).get( puzzles[i].charAt(0) ) );
-                continue;
-            }
-            int count = 0;
-            for (int j = 0; j < wordsNum.length; j++) {
-                if( exsist(puzzle, wordsNum[j], puzzles[i].charAt(0))){
-                    count++;
+            int total = 0;
+            for (int choose = 0; choose < (1 << 6); ++choose) {
+                int mask = 0;
+                for (int j = 0; j < 6; ++j) {
+                    if ( ((choose & (1 << j)) != 0 )) {
+                        mask = mask | (1 << (puzzles[i].charAt(j + 1) - 'a'));
+                    }
+                }
+                mask =  mask | (1 << (puzzles[i].charAt(0) - 'a'));
+                if (wordCounts.get(mask) != null ) {
+                    total += wordCounts.get(mask);
                 }
             }
-            if(mapCount.get(puzzle) == null){
-                mapCount.put(puzzle,new HashMap<Character, Integer>());
-            }
-            mapCount.get(puzzle).put(puzzles[i].charAt(0),count);
-            result.add(count);
+            result.add(total);
         }
         return result;
     }
 
-    public int countPuzzles(  HashMap<String,Integer> mapInt, String puzzles){
-        if(mapInt.get(puzzles) != null){
-            return mapInt.get(puzzles);
-        }
+    public int countPuzzles(String puzzles){
         int res = 0;
         for (int i = 0; i < puzzles.length(); i++) {
             res = res | ( 1 << (puzzles.charAt(i) - 'a') );
         }
-        mapInt.put(puzzles,res);
         return res;
     }
 
     /**
      * puzzle[0,1,0,1,1...] 那么 word必须是[0,*,0,*,*...], 并且word中first指定的位必须为1
+     * 改进相同count=X的谜面bcdefa就不用在重复计算，已经在第一次计算X的时候 计算了其他的结果；
+     * word每个字母都在谜面后，分别累计满足开头字符的数量的累计，如谜面abcdef=X abc满足后，在哈希表 X：{a:+=,b:+=,c+=},
      */
-    public boolean exsist(int puzzle , int word, char first){
-        if (((word >>> (first - 'a') ) & 1) != 1){
-            return false;
+    public void matchCount(HashMap<Integer,Integer> counts,int puzzle, int word){
+        if ( ((~puzzle) & word) == 0){
+            for (int i = 0; i < 26 && word != 0; i++) {
+                if( (word & 1 ) == 1){
+                    counts.put( i, counts.get(i)+1 );
+                }
+                word = word >>> 1;
+            }
         }
-        return ((~puzzle) & word) == 0;
     }
-    public boolean exsist(int word,char first){
-        return ((word >>> (first - 'a') ) & 1) == 1;
+
+    public void initMap(String puzzle,HashMap<Integer,Integer> counts){
+        for (int i = 0; i < puzzle.length(); i++) {
+            counts.put(puzzle.charAt(i)-'a',0);
+        }
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
