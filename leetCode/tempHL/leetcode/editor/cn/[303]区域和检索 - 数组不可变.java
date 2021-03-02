@@ -46,13 +46,19 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class NumArray {
-
+    int[] summary ;
     public NumArray(int[] nums) {
-
+        summary = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            summary[i] =( i == 0 ? 0 :summary[i-1]) + nums[i];
+        }
     }
-    
-    public int sumRange(int i, int j) {
 
+    public int sumRange(int i, int j) {
+        if(summary.length == 0){
+            return 0;
+        }
+        return summary[j] - (i == 0 ? 0 : summary[i-1]);
     }
 }
 
