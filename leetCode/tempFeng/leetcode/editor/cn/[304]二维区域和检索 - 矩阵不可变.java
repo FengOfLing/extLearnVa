@@ -37,46 +37,29 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class NumMatrix {
 
-    private int[][] sum;
-
+    int[][] summary;
     public NumMatrix(int[][] matrix) {
-        int size = matrix.length;
-        int length = matrix[0].length;
-        sum = new int[size][length];
-        for ( int i = 0; i < size; i++ ) {
-            for ( int j = 0; j < length; j++ ) {
-                sum[i][j] = muxRegin(i, j, matrix);
+        if(matrix.length == 0){
+            summary = new int[1][1];//避免计算和的时候特殊处理空数组
+        }else {
+            summary = new int[matrix.length][matrix[0].length];
+        }
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                summary[i][j] = matrix[i][j]
+                        + (i == 0 ? 0 : summary[i-1][j] )
+                        +(j == 0 ? 0 : summary[i][j-1])
+                        -((j == 0 || i == 0) ? 0 : summary[i-1][j-1]);
             }
         }
     }
-    
+
     public int sumRegion(int row1, int col1, int row2, int col2) {
-        return sum[row2][col2] + sum[row1][col1] - sum[row2][col1] - sum[row1][col2];
-    }
+        return summary[row2][col2]
+                - (row1 == 0 ? 0 : summary[row1-1][col2])
+                - (col1 == 0 ? 0 : summary[row2][col1-1])
+                + (0 == col1 || 0 == row1 ? 0 : summary[row1-1][col1-1]);
 
-    private int indexRegion(int row, int col, int[][] mat) {
-        if ( row == 0 && col == 0 ) {
-            return mat[0][0];
-        } else {
-            int rowCount = 0;
-            for ( int i = 0; i < row; i++ ) {
-                rowCount += mat[i][col];
-            }
-            int colCount = 0;
-            for ( int j = 0; j < col; j++ ) {
-                colCount += mat[row][j];
-            }
-            return rowCount + colCount + indexRegion(row - 1, col - 1, mat);
-        }
-    }
-
-    private int muxRegin(int row, int col, int[][] mat) {
-        if (  ) {
-
-        }
-        return muxRegin(row - 1, col, mat) +
-                muxRegin( row, col - 1, mat ) -
-                muxRegin(row - 1, col - 1, mat ) + mat[row][col];
     }
 }
 
