@@ -55,6 +55,17 @@ public class Solution {
         return false;
 
     }
+    public static int reverse(int x) {
+        int result = 0;
+        while (x != 0){
+            int a = x % 10;
+            if( x > 0 && (Integer.MAX_VALUE - a ) / 10 < result) return 0;
+            if( x < 0 && (Integer.MIN_VALUE - a ) / 10 > result) return 0;
+            result = result * 10 + a;
+            x = x/10;
+        }
+        return result;
+    }
 
 }
 

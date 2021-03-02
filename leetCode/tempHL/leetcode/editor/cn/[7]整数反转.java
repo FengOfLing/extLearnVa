@@ -1,6 +1,6 @@
-//给你一个 32 位的有符号整数 x ，返回 x 中每位上的数字反转后的结果。 
+//给你一个 32 位的有符号整数 x ，返回 x 中每位上的数字反转后的结果。
 //
-// 如果反转后整数超过 32 位的有符号整数的范围 [−231, 231 − 1] ，就返回 0。 
+// 如果反转后整数超过 32 位的有符号整数的范围 [−231, 231 − 1] ，就返回 0。
 //假设环境不允许存储 64 位整数（有符号或无符号）。
 //
 // 
@@ -47,7 +47,15 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int reverse(int x) {
-
+        int result = 0;
+        while (x != 0){
+            int a = x % 10;
+            if( x > 0 && (Integer.MAX_VALUE - a ) / 10 < result) return 0;
+            if( x < 0 && (Integer.MIN_VALUE - a ) / 10 > result) return 0;
+            result = result * 10 + a;
+            x = x/10;
+        }
+        return result;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
