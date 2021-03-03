@@ -31,34 +31,17 @@
 // 你可以假设 row1 ≤ row2 且 col1 ≤ col2 。 
 // 
 // Related Topics 动态规划 
-// 👍 214 👎 0
+// 👍 187 👎 0
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class NumMatrix {
 
-    int[][] summary;
     public NumMatrix(int[][] matrix) {
-        if(matrix.length == 0){
-            summary = new int[1][1];//避免计算和的时候特殊处理空数组
-        }else {
-            summary = new int[matrix.length][matrix[0].length];
-        }
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                summary[i][j] = matrix[i][j]
-                        + (i == 0 ? 0 : summary[i-1][j] )
-                        +(j == 0 ? 0 : summary[i][j-1])
-                        -((j == 0 || i == 0) ? 0 : summary[i-1][j-1]);
-            }
-        }
-    }
 
+    }
+    
     public int sumRegion(int row1, int col1, int row2, int col2) {
-        return summary[row2][col2]
-                - (row1 == 0 ? 0 : summary[row1-1][col2])
-                - (col1 == 0 ? 0 : summary[row2][col1-1])
-                + (0 == col1 || 0 == row1 ? 0 : summary[row1-1][col1-1]);
 
     }
 }
