@@ -25,8 +25,7 @@ class Solution {
         int[] result = new int[nums.length];
         Stack<Integer> stack = new Stack<>();
         Stack<Integer> stackIndex = new Stack<>();
-        int start = 0;
-        int firstOfStack = 0 , firstOfStackIndex = 0;
+        int firstOfStack = 0;
         for (int i = 0; i < nums.length; i++) {
             //从栈中一直吐出，一直到栈空或者栈顶的数字大于nums[i];
             while( !stack.isEmpty() && stack.peek() < nums[i] ){
@@ -35,7 +34,6 @@ class Solution {
             }
             if( stack.isEmpty()){
                 firstOfStack = nums[i];
-                firstOfStackIndex = i;
             }
             stack.push( nums[i]);
             stackIndex.push( i );
