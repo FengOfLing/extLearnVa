@@ -4,51 +4,33 @@ import java.util.*;
 
 public class Solution {
     public static void main(String[] args) {
+        System.out.println(isPalindrome("0p"));
 
     }
 
-    public List<List<String>> partition(String s) {
-        return getSubHuiWen(s,0,s.length()-1);
-    }
-
-    public List<List<String>> getSubHuiWen(String s,int start, int end){
-        List<List<String>> result = new ArrayList<List<String>>();
-        List<String> stringList = new ArrayList<>();
-
-        for (int i = start; i <= end; i++) {
-            stringList.add( String.valueOf(s.charAt(i)));
-        }
-        result.add(stringList);
-
-        for (int i = start; i <= end; i++) {
-            for (int j = i + 1; j <= end ; j++) {
-                if( isHuiWen(s, i, j)){
-                    List<List<String>> subResult = getSubHuiWen(s,j,end);
-                    for (int k = 0; k < subResult.size(); k++) {
-                        List<String> list = new ArrayList<String>();
-                        for (int l = start; l < i ; l++) {
-                            list.add( String.valueOf(s.charAt(l)));
-                        }
-                        list.add( s.substring(i,j+1));
-                        list.addAll( subResult.get(k));
-                        result.add(list);
-                    }
-                }
+    public static boolean isPalindrome(String s) {
+        String lowwer = s.toLowerCase();
+        int i = 0;
+        int j = s.length() - 1;
+        while( i < j){
+            while( i < j && !isValid(lowwer.charAt(i))){
+                i++;
             }
-        }
-        return result;
-    }
-
-    public boolean isHuiWen(String s, int start, int end){
-        while( start < end ){
-            if( s.charAt(start) != s.charAt(end)){
+            while(i < j && !isValid(lowwer.charAt(j) )){
+                j--;
+            }
+            if( i < j && lowwer.charAt(i) != lowwer.charAt(j))
+            {
                 return false;
             }
-            start++;
-            end--;
-
+            i++;
+            j--;
         }
+        return true;
     }
 
+    public static boolean isValid( char c){
+        return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
+    }
 }
 
