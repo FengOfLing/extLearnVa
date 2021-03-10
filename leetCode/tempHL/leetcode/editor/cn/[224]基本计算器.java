@@ -1,16 +1,48 @@
-package org.edu.cqu.learn.code.hl;
+//实现一个基本的计算器来计算一个简单的字符串表达式 s 的值。 
+//
+// 
+//
+// 示例 1： 
+//
+// 
+//输入：s = "1 + 1"
+//输出：2
+// 
+//
+// 示例 2： 
+//
+// 
+//输入：s = " 2-1 + 2 "
+//输出：3
+// 
+//
+// 示例 3： 
+//
+// 
+//输入：s = "(1+(4+5+2)-3)+(6+8)"
+//输出：23
+// 
+//
+// 
+//
+// 提示： 
+//
+// 
+// 1 <= s.length <= 3 * 105 
+// s 由数字、'+'、'-'、'('、')'、和 ' ' 组成 
+// s 表示一个有效的表达式 
+// 
+// Related Topics 栈 数学 
+// 👍 399 👎 0
 
-import java.util.*;
 
-public class Solution {
-    public static void main(String[] args) {
-//        System.out.println(hasCycle(new ListNode(1,new ListNode(2))));
-//        System.out.println( calculate("(1+(4+5+2)-3)+(6+8) ") );
-        System.out.println( calculate("2147483647 ") );
-        System.out.println(Integer.MAX_VALUE);
-    }
-
-    public static int calculate(String s) {
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    //			解答成功:
+    //			执行耗时:36 ms,击败了18.20% 的Java用户
+    //			内存消耗:39.8 MB,击败了36.45% 的Java用户
+    public int calculate(String s) {
+        // todo 需要整理一下
         char X = 'X';//X代表数字位
         Stack<Integer> nums = new Stack<Integer>();
         Stack<Character> operator = new Stack<>();//只存 '+''-''(' 'X'
@@ -70,24 +102,8 @@ public class Solution {
         }
         return result;
     }
-    public static boolean isNum(Character c){
+    public boolean isNum(Character c){
         return c >= '0' && c <= '9';
     }
-
-    public static boolean hasCycle(ListNode head) {
-        //链表成环的判断是  在链表中有两个节点指向同一个节点。 一步两步走：一个指针步长1，一个指针步长2，如果2能反追到1表示成环；
-        if( head == null ) return false;
-        ListNode node1 = head;
-        ListNode node2 = head;
-        while( node2 != null && node2.next != null){
-            node1 = node1.next;
-            node2 = node2.next.next;
-            if(node1 == node2){
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
-
+//leetcode submit region end(Prohibit modification and deletion)
