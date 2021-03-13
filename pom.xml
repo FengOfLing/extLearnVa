@@ -12,6 +12,7 @@
         <module>designPattern</module>
         <module>leetCode</module>
         <module>sql</module>
+        <module>spring</module>
     </modules>
 
     <properties>
