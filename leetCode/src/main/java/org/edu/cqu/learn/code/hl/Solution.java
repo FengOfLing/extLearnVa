@@ -4,25 +4,33 @@ import java.util.*;
 
 public class Solution {
     public static void main(String[] args) {
-//        System.out.println( reverseBits(245017234) );
-        System.out.println( reverseBits(-3) );
+//        System.out.println( isHappy(19) );
+        MyHashSet myHashSet = new MyHashSet();
+        myHashSet.add(1);      // set = [1]
+        myHashSet.add(2);      // set = [1, 2]
+        myHashSet.contains(1); // 返回 True
+        myHashSet.contains(3); // 返回 False ，（未找到）
+        myHashSet.add(2);      // set = [1, 2]
+        myHashSet.contains(2); // 返回 True
+        myHashSet.remove(2);   // set = [1]
+        myHashSet.contains(2); // 返回 False ，（已移除）
     }
-    public static int reverseBits(int n) {
-        int result = 0;
-        if( n > 0 ) {
-            for (int i = 32; i > 0; i--) {
-                result = (result << 1) + (n % 2);
-                n = n >> 1;
-            }
-        }else if( n < 0){
-            n = -n-1;
-            for (int i = 31; i > 0 ; i--) {
-                result = (result << 1) + ( n % 2 == 0 ? 1 : 0);
-                n = n >> 1;
-            }
-            result = (result << 1) + 1;
+    public static boolean isHappy(int n){
+        Map<Integer,Integer> map = new HashMap<>();
+        while( n != 1 && map.get(n) == null){
+            map.put(n,1);
+            n = getNextNum( n );
         }
-        return result;
+        return n == 1;
+    }
+
+    public static int getNextNum(int num ) {
+        int sum = 0;
+        while( num != 0){
+            sum += (num % 10) * (num % 10);
+            num /= 10;
+        }
+        return sum;
     }
 }
 
